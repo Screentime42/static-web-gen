@@ -15,8 +15,8 @@ class TestTextNode(unittest.TestCase):
       self.assertNotEqual(node, node2)
 
    def test_not_eq_text(self):
-      node = TextNode("This is a text node", TextType.PLAIN)
-      node2 = TextNode("This is still a text node just different", TextType.PLAIN)
+      node = TextNode("This is a text node", TextType.TEXT)
+      node2 = TextNode("This is still a text node just different", TextType.TEXT)
       self.assertNotEqual(node, node2)
 
    def test_not_eq_diff_url(self):
