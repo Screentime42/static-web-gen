@@ -54,10 +54,3 @@ if __name__ == "__main__":
     unittest.main()
 
 
-
-   #     TEXT = "text"       # e.g. text
-   # BOLD = "bold"         # e.g. **text**
-   # ITALIC = "italic"       # e.g. _text_
-   # CODE = "code"         # e.g. `text`
-   # LINK = "link"         # e.g. [anchor text](url)
-   # IMAGE = "image"        # e.g. ![alt](url)
