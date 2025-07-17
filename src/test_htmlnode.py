@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 print("Test file is running!")
@@ -58,6 +58,8 @@ class TestHTMLNode(unittest.TestCase):
       self.assertIn("href", result)
 
 
+   # LEAFNODE TESTS
+
    def test_leaf_to_html_p(self):
       node = LeafNode("p", "Hello, world!")
       self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
@@ -77,6 +79,35 @@ class TestHTMLNode(unittest.TestCase):
    def test_leaf_to_html_tag_is_none(self):
       node = LeafNode(None, "Raw text?")
       self.assertEqual(node.to_html(), "Raw text?")
+
+
+   # PARENTNODE TESTS
+
+   def test_simple_rendering(self):
+      node = ParentNode("p", [LeafNode(None, "Hello world!")])
+      self.assertEqual(node.to_html(), "<p>Hello world!</p>")
+
+   def test_rendering_with_tagged_children(self):
+      node = ParentNode("p", [
+         LeafNode("b", "Bold"),
+         LeafNode(None, " and plain."),
+         LeafNode("i", " Italic")
+      ])
+      expected = "<p><b>Bold</b> and plain.<i> Italic</i></p>"
+      self.assertEqual(node.to_html(), expected)
+
+   def test_props_rendering(self):
+      node = ParentNode("p", [LeafNode(None, "Hi")], props={"class": "intro"})
+      self.assertEqual(node.to_html(), '<p class="intro">Hi</p>')
+      
+   def test_missing_tag_raises(self):
+      with self.assertRaises(ValueError):
+         ParentNode(None, [LeafNode(None, "Hi")])
+
+   def test_missing_children_raises(self):
+      with self.assertRaises(ValueError):
+         ParentNode("p", None)
+   
 
 if __name__ == "__main__":
     unittest.main()

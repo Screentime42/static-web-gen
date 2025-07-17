@@ -30,3 +30,23 @@ class LeafNode(HTMLNode):
          return self.value
       props_str = self.props_to_html() if self.props else ""
       return f'<{self.tag}{props_str}>{self.value}</{self.tag}>'
+   
+
+class ParentNode(HTMLNode):
+   def __init__(self, tag, children, props=None):
+      super().__init__(tag=tag, value=None, children=children, props=props)
+      if not self.tag:
+         raise ValueError("ParentNode must have a tag")
+      if not self.children:
+         raise ValueError("ParentNode must have children defined")
+      
+   def to_html(self):
+      if self.tag == None:
+         raise ValueError("ParentNode must have a tag")
+      if self.children == None:
+         raise ValueError("ParentNode must have children defined")
+      
+      props_str = self.props_to_html() if self.props else ""
+      inner_html = "".join(child.to_html() for child in self.children)
+      return f'<{self.tag}{props_str}>{inner_html}</{self.tag}>'
+      
