@@ -6,6 +6,7 @@ def markdown_to_blocks(markdown):
    cleaned_blocks = []
    for string in strings:
       stripped = string.strip()
-      if stripped: cleaned_blocks.append(stripped)
+      if stripped: 
+         cleaned_blocks.append(stripped)
 
    return cleaned_blocks                     
