@@ -9,4 +9,4 @@ def markdown_to_blocks(markdown):
       if stripped: 
          cleaned_blocks.append(stripped)
 
-   return cleaned_blocks                     
+   return cleaned_blocks
