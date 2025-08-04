@@ -18,6 +18,8 @@ def block_type_to_tag(blocktype, block=None):
       return "ul"
    elif blocktype == BlockType.ORDERED_LIST:
       return "ol"
+   elif blocktype == BlockType.QUOTE:
+      return "blockquote"
    else:
       raise Exception("Error: Invalid blocktype")
 
@@ -49,6 +51,38 @@ def text_to_children(blocktype, block):
       textnodes = text_to_textnodes(paragraph_content)
       children = [text_node_to_html_node(node) for node in textnodes]
       return HTMLNode(tag=tag, children=children)
+   
+
+   elif blocktype == BlockType.ORDERED_LIST:
+      lines = block.split('\n')
+      li_nodes = []
+      for line in lines:
+         clean = line.split('. ', 1)[1]
+         textnodes = text_to_textnodes(clean)
+         children = [text_node_to_html_node(node) for node in textnodes]
+         li_nodes.append(HTMLNode(tag="li", children=children))
+      return HTMLNode(tag="ol", children=li_nodes)
+
+
+   elif blocktype == BlockType.UNORDERED_LIST:
+      lines = block.split('\n')
+      li_nodes = []
+      for line in lines:
+         line = line.lstrip()
+         if line.startswith('- '):
+            clean = line[2:].strip()
+            textnodes = text_to_textnodes(clean)
+            children = [text_node_to_html_node(node) for node in textnodes]
+            li_nodes.append(HTMLNode(tag="li", children=children))
+      return HTMLNode(tag="ul", children=li_nodes)
+
+
+   elif blocktype == BlockType.QUOTE:
+      cleaned_lines = [line.lstrip("> ").rstrip() for line in block.split('\n')]
+      quote_content = "\n".join(cleaned_lines)
+      textnodes = text_to_textnodes(quote_content)
+      children = [text_node_to_html_node(node) for node in textnodes]
+      return HTMLNode(tag="blockquote", children=children)
    
    else:
       tag = block_type_to_tag(blocktype, block)
