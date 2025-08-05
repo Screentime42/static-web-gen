@@ -9,7 +9,7 @@ def main():
    if os.path.exists("public"):
       shutil.rmtree("public")
    copy_static()
-   generate_page("content/index.md", "template.html", "public/index.html")
+   generate_pages_recursive("content", "template.html", "public")
 
 def extract_title(markdown):
    lines = markdown.split('\n')
@@ -41,6 +41,18 @@ def generate_page(from_path, template_path, dest_path):
       print(f"File successfully writted to {dest_path}")
    
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+   for dirpath, _, filenames  in os.walk(dir_path_content):
+      for filename in filenames:
+         if filename.endswith('.md'):
+            from_path = os.path.join(dirpath, filename)
+            subfolder = os.path.relpath(dirpath, dir_path_content)
+            dest_subdir = os.path.join(dest_dir_path, subfolder)
+            new_filename = filename[:-3] + ".html"
+            out_path = os.path.join(dest_subdir, new_filename)
+            generate_page(from_path, template_path, out_path)
+   
+   
 
 
 if __name__ == "__main__":
