@@ -3,7 +3,7 @@ import shutil
 
 def copy_static():
    source = "static"
-   destination = "public"
+   destination = "docs"
    
    if os.path.exists(destination):
       shutil.rmtree(destination)
